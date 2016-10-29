@@ -199,7 +199,9 @@ namespace CS422
                 ServiceURI parameter, then it can process that request.*/
                 foreach (WebService ws in _Services)
                 {
-                    if (wr.RequestURI.StartsWith(ws.ServiceURI))
+                    string decodedURI = WebUtility.UrlDecode(wr.RequestURI);
+
+                    if (decodedURI.StartsWith(ws.ServiceURI))
                     {
                         ws.Handler(wr);
                         foundService = true;
@@ -210,6 +212,7 @@ namespace CS422
                 if (!foundService)
                 {
                     wr.WriteHTMLResponse("<html>404: Page not found </html>");
+                    
                 }
 
                 TerminateSocketConnection(client);
